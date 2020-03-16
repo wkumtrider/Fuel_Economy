@@ -1,4 +1,4 @@
-Fuel Economy of Used Vehciles.
+Fuel Economy of Used Vehicles.
 
 Summary
 
@@ -20,6 +20,6 @@ Search Capability:
 Search by vehicle make, model, and year to return fuel economy.
 Search for a specifi fuel econom and return a list of vehicles that meet the criteria.
 
-Milestone
+Milestones
 
 No milestones at this time.
