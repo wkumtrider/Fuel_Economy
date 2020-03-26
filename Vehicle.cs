@@ -12,6 +12,7 @@ namespace FuelEconomy
         public string VehicleModel { get; set; }
         public int VehicleYear { get; set; }
         public string VehicleTrans { get; set; }
+        public int VehicleEngine { get; set; }
         public int VehicleFuelEconomy { get; set; }
 
     }

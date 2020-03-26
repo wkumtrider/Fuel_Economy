@@ -6,7 +6,7 @@ This project will allow users to view the fuel economy of a specified vehicle an
 
 ## Technical Summary
 
-- C#
+- C# for backend
 
 - .NET framework
 
@@ -29,4 +29,8 @@ This project will allow users to view the fuel economy of a specified vehicle an
 
 ## Milestone
 
-No milestones at this time.
+Write code to prompt user to enter vehicle information
+
+Read data from a CSV file
+
+Create vehicle class
