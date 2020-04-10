@@ -11,9 +11,8 @@ namespace FuelEconomy
         public string VehicleMake { get; set; }
         public string VehicleModel { get; set; }
         public int VehicleYear { get; set; }
-        public string VehicleTrans { get; set; }
-        public int VehicleEngine { get; set; }
-        public int VehicleFuelEconomy { get; set; }
+        public int VehicleFuelEconomyCity { get; set; }
+        public int VehicleFuelEconomyHW { get; set; }
 
     }
 }
