@@ -24,8 +24,6 @@ namespace FuelEconomy
             vehicledata.VehicleMake = "Ford";
             vehicledata.VehicleModel = "Mustang";
             vehicledata.VehicleYear = 2015;
-            vehicledata.VehicleTrans = "Manual";
-            vehicledata.VehicleEngine = 8;
             Console.WriteLine(vehicledata.VehicleModel);*/
 
             StringBuilder menu = new StringBuilder();
@@ -50,13 +48,20 @@ namespace FuelEconomy
                 switch (input)
                 {
                     case "1":
-                        PrintList(fileContents);
-                        Console.WriteLine(fileContents);
-                        Console.WriteLine(menu.ToString());
-
+                        Console.WriteLine("Enter vehicle make");
+                        Console.ReadLine();
+                        Console.WriteLine("Enter vehicle model: ");
+                        Console.ReadLine();
+                        Console.WriteLine("Enter vehicle year: ");
+                        Console.ReadLine();
                         break;
-                    //case "2":
-                        
+
+                    case "2":
+                        Console.WriteLine("Enter the desired city fuel econonmy: ");
+                        Console.ReadLine();
+                        Console.WriteLine("Enter the desired highway fuel economy: ");
+                        Console.ReadLine();
+                        break;
 
                 }
             }
@@ -71,7 +76,6 @@ namespace FuelEconomy
             using (var reader = new StreamReader(fileName))
             {
                 string line = "";
-                reader.ReadLine();
                 while ((line = reader.ReadLine()) != null)
                 {
                     VehicleData vehicle = new VehicleData();
@@ -82,10 +86,24 @@ namespace FuelEconomy
                    // {
                         //vehicle.VehicleMake = parseInt;
                     //}
+
+                    vehicle.VehicleMake = value[0];
                     vehicle.VehicleModel = value[1];
-                    vehicle.VehicleTrans = value[2];
-                    //vehicle.VehicleFuelEconomy = value[3];
-                    //vehicle.VehicleEngine = value[5];
+                    int parseInt;
+                    if (int.TryParse(value[2], out parseInt))
+                    {
+                     vehicle.VehicleYear = parseInt;
+                    }
+                    int parseInt1;
+                    if (int.TryParse(value[3], out parseInt1))
+                    {
+                     vehicle.VehicleFuelEconomyCity = parseInt1;
+                    }
+                    int parseInt2;
+                    if (int.TryParse(value[4], out parseInt2))
+                    {
+                     vehicle.VehicleFuelEconomyHW = parseInt2;
+                    }
                     
                     vehicleData.Add(vehicle);
                 }
@@ -95,7 +113,7 @@ namespace FuelEconomy
 
 
         //Write to file (will need to add data values)
-        private static void WriteTitanicData(List<VehicleData> fileContents)
+        private static void WriteVehicleData(List<VehicleData> fileContents)
         {
             using(var writer = File.AppendText("FuelEconomy.csv"))
             {
@@ -107,11 +125,11 @@ namespace FuelEconomy
             }
         }
        
-        private static void PrintList(List<VehicleData> albums)
+        private static void PrintList(List<VehicleData> vehicles)
         {
-            foreach (var album in albums)
+            foreach (var vehicle in vehicles)
             {
-                Console.WriteLine(album.ToString());
+                Console.WriteLine($"Make: {vehicle.VehicleMake}, Model: {vehicle.VehicleModel}");
             }
         }
 
