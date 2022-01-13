@@ -19,7 +19,7 @@ namespace FuelEconomy
             var fileName = Path.Combine(directory.FullName, "FuelEconomy.csv");
             var specs = ReadVehicleData(fileName);
 
-           
+
             /*VehicleData vehicledata = new VehicleData();
             vehicledata.VehicleMake = "Ford";
             vehicledata.VehicleModel = "Mustang";
@@ -34,7 +34,7 @@ namespace FuelEconomy
             menu.Append("\nTYou can also enter a fuel economy and return a list of vehicles that meet the request!");
             menu.Append("\n----------------------------");
             menu.Append("\nTo search by vehicle, enter 1.");
-            menu.Append("\nTo seacrch by fuel economy, press 2");
+            menu.Append("\nTo search by fuel economy, press 2");
             menu.Append("\nTo add a vehicle and it's specs, press 3");
             menu.Append("\n----------------------------");
             menu.Append("\nEnter Q to quit");
@@ -83,8 +83,8 @@ namespace FuelEconomy
 
                     //int parseInt;
                     //if (int.TryParse(value[4], out parseInt))
-                   // {
-                        //vehicle.VehicleMake = parseInt;
+                    // {
+                    //vehicle.VehicleMake = parseInt;
                     //}
 
                     vehicle.VehicleMake = value[0];
@@ -92,19 +92,19 @@ namespace FuelEconomy
                     int parseInt;
                     if (int.TryParse(value[2], out parseInt))
                     {
-                     vehicle.VehicleYear = parseInt;
+                        vehicle.VehicleYear = parseInt;
                     }
                     int parseInt1;
                     if (int.TryParse(value[3], out parseInt1))
                     {
-                     vehicle.VehicleFuelEconomyCity = parseInt1;
+                        vehicle.VehicleFuelEconomyCity = parseInt1;
                     }
                     int parseInt2;
                     if (int.TryParse(value[4], out parseInt2))
                     {
-                     vehicle.VehicleFuelEconomyHW = parseInt2;
+                        vehicle.VehicleFuelEconomyHW = parseInt2;
                     }
-                    
+
                     vehicleData.Add(vehicle);
                 }
             }
@@ -115,7 +115,7 @@ namespace FuelEconomy
         //Write to file (will need to add data values)
         private static void WriteVehicleData(List<VehicleData> fileContents)
         {
-            using(var writer = File.AppendText("FuelEconomy.csv"))
+            using (var writer = File.AppendText("FuelEconomy.csv"))
             {
                 writer.WriteLine("VehicleMake, VehicleModel,");
                 foreach (var item in fileContents)
@@ -124,7 +124,7 @@ namespace FuelEconomy
                 }
             }
         }
-       
+
         private static void PrintList(List<VehicleData> vehicles)
         {
             foreach (var vehicle in vehicles)
