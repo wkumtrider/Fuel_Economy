@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Globalization;
 
 
 namespace FuelEconomy
@@ -19,12 +17,6 @@ namespace FuelEconomy
             var fileName = Path.Combine(directory.FullName, "FuelEconomy.csv");
             var specs = ReadVehicleData(fileName);
 
-
-            /*VehicleData vehicledata = new VehicleData();
-            vehicledata.VehicleMake = "Ford";
-            vehicledata.VehicleModel = "Mustang";
-            vehicledata.VehicleYear = 2015;
-            Console.WriteLine(vehicledata.VehicleModel);*/
 
             StringBuilder menu = new StringBuilder();
             menu.Append("\n");
@@ -57,7 +49,7 @@ namespace FuelEconomy
                         break;
 
                     case "2":
-                        Console.WriteLine("Enter the desired city fuel econonmy: ");
+                        Console.WriteLine("Enter the desired city fuel economy: ");
                         Console.ReadLine();
                         Console.WriteLine("Enter the desired highway fuel economy: ");
                         Console.ReadLine();
@@ -65,8 +57,6 @@ namespace FuelEconomy
 
                 }
             }
-
-
         }
 
         //Read from the file
@@ -111,8 +101,12 @@ namespace FuelEconomy
             return vehicleData;
         }
 
+        //TODO: We are getting the CSV file loaded but we need to write the value out I guess? 
+        // Need to do a search and print out the out put?
+
 
         //Write to file (will need to add data values)
+        // Is this appending to the csv? 
         private static void WriteVehicleData(List<VehicleData> fileContents)
         {
             using (var writer = File.AppendText("FuelEconomy.csv"))
