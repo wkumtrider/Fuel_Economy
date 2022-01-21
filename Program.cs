@@ -1,64 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-
+using System.Linq;
 
 namespace FuelEconomy
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //Find the file
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
             var fileName = Path.Combine(directory.FullName, "FuelEconomy.csv");
-            var specs = ReadVehicleData(fileName);
-
-
-            StringBuilder menu = new StringBuilder();
-            menu.Append("\n");
-            menu.Append("\n");
-            menu.Append("\nWelcome to the Fuel Economy Database.");
-            menu.Append("\nThis database allows you to look up the fuel economy of vehicles from 2005 to 2017.");
-            menu.Append("\nYou can also enter a fuel economy and return a list of vehicles that meet the request!");
-            menu.Append("\n----------------------------");
-            menu.Append("\nTo search by vehicle, enter 1.");
-            menu.Append("\nTo search by fuel economy, press 2");
-            menu.Append("\nTo add a vehicle and it's specs, press 3");
-            menu.Append("\n----------------------------");
-            menu.Append("\nEnter Q to quit");
-
-            Console.WriteLine(menu.ToString());
-
-            var fileContents = specs;
+            var vehicalSpecs = ReadVehicleData(fileName);
+            Menu.DisplayMenu();
             var input = Console.ReadLine();
             while (input.ToLower() != "q")
             {
                 switch (input)
                 {
+                    //Searches for a specified vehicle by make, model and year
                     case "1":
                         Console.WriteLine("Enter vehicle make");
-                        Console.ReadLine();
+                        var vehicleMake = Console.ReadLine().ToUpper();
                         Console.WriteLine("Enter vehicle model: ");
-                        Console.ReadLine();
+                        var vehicleModle = Console.ReadLine().ToUpper();
                         Console.WriteLine("Enter vehicle year: ");
-                        Console.ReadLine();
+                        var vehicleYear = Console.ReadLine();
+
+                        // Search and print logic here
+                        List<VehicleData> results = vehicalSpecs.Where(vehicalSpecs => vehicalSpecs.VehicleMake.ToUpper() == vehicleMake && vehicalSpecs.VehicleModel.ToUpper() == vehicleModle
+                        && vehicalSpecs.VehicleYear.ToString() == vehicleYear).ToList();
+                        if (results.Count > 0)
+                        {
+                            PrintVehicleInfo(results);
+                        }
+                        else
+                            Console.WriteLine("No vehicles found matching your criteria\n");
+                        Menu.DisplayMenu();
                         break;
 
+                    //Searches for a vehicle by a specified fuel economy
                     case "2":
                         Console.WriteLine("Enter the desired city fuel economy: ");
                         Console.ReadLine();
                         Console.WriteLine("Enter the desired highway fuel economy: ");
                         Console.ReadLine();
                         break;
-
                 }
             }
         }
 
+        //TODO: Not getting mpg values
         //Read from the file
         public static List<VehicleData> ReadVehicleData(string fileName)
         {
@@ -101,12 +95,11 @@ namespace FuelEconomy
             return vehicleData;
         }
 
-        //TODO: We are getting the CSV file loaded but we need to write the value out I guess? 
+        //TODO: We are getting the CSV file loaded but we need to write the value out I guess?
         // Need to do a search and print out the out put?
 
-
         //Write to file (will need to add data values)
-        // Is this appending to the csv? 
+        // Is this appending to the csv?
         private static void WriteVehicleData(List<VehicleData> fileContents)
         {
             using (var writer = File.AppendText("FuelEconomy.csv"))
@@ -119,13 +112,12 @@ namespace FuelEconomy
             }
         }
 
-        private static void PrintList(List<VehicleData> vehicles)
+        private static void PrintVehicleInfo(List<VehicleData> vehicles)
         {
             foreach (var vehicle in vehicles)
             {
                 Console.WriteLine($"Make: {vehicle.VehicleMake}, Model: {vehicle.VehicleModel}");
             }
         }
-
     }
 }
