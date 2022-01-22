@@ -88,12 +88,44 @@ namespace FuelEconomy
                         }
 
                         break;
+
+                    case "3":
+                        Console.WriteLine("Please enter vehicle make to be added to the database");
+                        var vehcileMakeToBeAdded = Console.ReadLine();
+                        Console.WriteLine("Enter vehicle model to be added to the database");
+                        var vehicleModelToBeAdded = Console.ReadLine();
+                        Console.WriteLine("Enter vehicle year to be added to the database");
+                        var vehicleYearToBeAdded = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter vehicle MPG in the City");
+                        var vehicleMPGCityToBeAdded = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter vehicle MPG Highway to be added to the database");
+                        var vehicleMPGHightwayToBeAdded = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter vehicle MPG Combined to be added to the database");
+                        var vehicleMPGCombinedToBeAdded = int.Parse(Console.ReadLine());
+
+                        VehicleData vehicleDataToAdd = new VehicleData
+                        {
+                            VehicleMake = vehcileMakeToBeAdded,
+                            VehicleModel = vehicleModelToBeAdded,
+                            VehicleYear = vehicleYearToBeAdded,
+                            VehicleFuelEconomyCity = vehicleMPGCityToBeAdded,
+                            VehicleFuelEconomyHW = vehicleMPGHightwayToBeAdded,
+                            VehicleFuelEconomyCombined = vehicleMPGCombinedToBeAdded
+                        };
+                        WriteVehicleData(vehicleDataToAdd);
+
+                        Console.WriteLine("Enter '3'if you would like to enter another vehicle into the database? Or Q to quit");
+                        var enterNewVehicleAgain = Console.ReadLine().ToLower();
+                        if (enterNewVehicleAgain != "3")
+                        {
+                            { Environment.Exit(0); }
+                        }
+
+                        break;
                 }
             }
         }
 
-        //TODO: Not getting mpg values
-        //Read from the file
         public static List<VehicleData> ReadVehicleData(string fileName)
         {
             var vehicleData = new List<VehicleData>();
@@ -129,16 +161,15 @@ namespace FuelEconomy
             return vehicleData;
         }
 
-        //TODO: We are getting the CSV file loaded but we need to write new values into the CSV
-        private static void WriteVehicleData(List<VehicleData> fileContents)
+        private static void WriteVehicleData(VehicleData vehicleDataToAdd)
         {
-            using (var writer = File.AppendText("FuelEconomy.csv"))
+            string currentDirectory = Directory.GetCurrentDirectory();
+            DirectoryInfo directory = new DirectoryInfo(currentDirectory);
+            var fileName = Path.Combine(directory.FullName, "FuelEconomy.csv");
+            using (var writer = File.AppendText(fileName))
             {
-                writer.WriteLine("VehicleMake, VehicleModel,");
-                foreach (var item in fileContents)
-                {
-                    writer.WriteLine(item.VehicleMake + "," + item.VehicleModel);
-                }
+                string vehicleDateToWriteToFile = ($"{vehicleDataToAdd.VehicleMake},{vehicleDataToAdd.VehicleModel}, {vehicleDataToAdd.VehicleYear}, {vehicleDataToAdd.VehicleFuelEconomyCity}, {vehicleDataToAdd.VehicleFuelEconomyHW}, {vehicleDataToAdd.VehicleFuelEconomyCombined}");
+                writer.WriteLine(vehicleDateToWriteToFile);
             }
         }
 

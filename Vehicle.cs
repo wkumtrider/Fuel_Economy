@@ -13,6 +13,7 @@ namespace FuelEconomy
         public int VehicleYear { get; set; }
         public int VehicleFuelEconomyCity { get; set; }
         public int VehicleFuelEconomyHW { get; set; }
+        public int VehicleFuelEconomyCombined { get; set; }
 
     }
 }
