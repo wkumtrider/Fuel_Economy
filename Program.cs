@@ -1,75 +1,131 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Globalization;
-
+using System.Linq;
 
 namespace FuelEconomy
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //Find the file
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
             var fileName = Path.Combine(directory.FullName, "FuelEconomy.csv");
-            var specs = ReadVehicleData(fileName);
+            var vehicalSpecs = ReadVehicleData(fileName);
 
-           
-            /*VehicleData vehicledata = new VehicleData();
-            vehicledata.VehicleMake = "Ford";
-            vehicledata.VehicleModel = "Mustang";
-            vehicledata.VehicleYear = 2015;
-            Console.WriteLine(vehicledata.VehicleModel);*/
-
-            StringBuilder menu = new StringBuilder();
-            menu.Append("\n");
-            menu.Append("\n");
-            menu.Append("\nWelcome to the Fuel Economy Database.");
-            menu.Append("\nThis database allows you to look up the fuel economy of vehciles from 2005 to 2017.");
-            menu.Append("\nTYou can also enter a fuel economy and return a list of vehicles that meet the request!");
-            menu.Append("\n----------------------------");
-            menu.Append("\nTo search by vehicle, enter 1.");
-            menu.Append("\nTo seacrch by fuel economy, press 2");
-            menu.Append("\nTo add a vehicle and it's specs, press 3");
-            menu.Append("\n----------------------------");
-            menu.Append("\nEnter Q to quit");
-
-            Console.WriteLine(menu.ToString());
-
-            var fileContents = specs;
+            //Displays initial menu
+            Menu.DisplayMenu();
             var input = Console.ReadLine();
             while (input.ToLower() != "q")
             {
                 switch (input)
                 {
+                    //Searches for a specified vehicle by make, model and year
                     case "1":
                         Console.WriteLine("Enter vehicle make");
-                        Console.ReadLine();
+                        var vehicleMake = Console.ReadLine().ToUpper();
                         Console.WriteLine("Enter vehicle model: ");
-                        Console.ReadLine();
+                        var vehicleModle = Console.ReadLine().ToUpper();
                         Console.WriteLine("Enter vehicle year: ");
-                        Console.ReadLine();
+                        var vehicleYear = Console.ReadLine();
+
+                        // Search and print logic here
+                        List<VehicleData> resultsSearchByVehicle = vehicalSpecs.Where(vehicalSpecs => vehicalSpecs.VehicleMake.ToUpper() == vehicleMake && vehicalSpecs.VehicleModel.ToUpper() == vehicleModle
+                        && vehicalSpecs.VehicleYear.ToString() == vehicleYear).ToList();
+                        if (resultsSearchByVehicle.Count > 0)
+                        {
+                            PrintVehicleInfo(resultsSearchByVehicle);
+                            Console.WriteLine("\n Enter '1' to continue an new search or 'q' to quit.");
+                            var newsearch = Console.ReadLine().ToLower();
+                            if (newsearch != "1")
+                            {
+                                { Environment.Exit(0); }
+                            }
+                        }
+                        else //No vehicles found matching search criteria
+                        {
+                            Console.WriteLine("No vehicles found matching your criteria");
+                            Console.WriteLine("\n Enter '1' to continue an new search or 'q' to quit.");
+                            var newsearch = Console.ReadLine().ToLower();
+                            if (newsearch != "1")
+                            {
+                                { Environment.Exit(0); }
+                            }
+                        }
+
                         break;
 
+                    //Searches for a vehicle by a specified fuel economy
                     case "2":
-                        Console.WriteLine("Enter the desired city fuel econonmy: ");
-                        Console.ReadLine();
+                        Console.WriteLine("Enter the desired city fuel economy: ");
+                        int desiredCityMPG = int.Parse(Console.ReadLine());
                         Console.WriteLine("Enter the desired highway fuel economy: ");
-                        Console.ReadLine();
+                        int desiredHighwayMPG = int.Parse(Console.ReadLine());
+
+                        // Search and print logic here
+                        List<VehicleData> resultsSearchByMPG = vehicalSpecs.Where(vehicalSpecs => vehicalSpecs.VehicleFuelEconomyCity == desiredCityMPG && vehicalSpecs.VehicleFuelEconomyHW == desiredHighwayMPG).ToList();
+                        if (resultsSearchByMPG.Count > 0)
+                        {
+                            PrintVehicleInfo(resultsSearchByMPG);
+                            Console.WriteLine("\n Enter '1' to continue an new search or 'q' to quit.");
+                            var newsearch = Console.ReadLine().ToLower();
+                            if (newsearch != "1")
+                            {
+                                { Environment.Exit(0); }
+                            }
+                        }
+                        else //No vehicles found matching search criteria
+                        {
+                            Console.WriteLine("No vehicles found matching your criteria");
+                            Console.WriteLine("\n Enter '1' to continue an new search or 'q' to quit.");
+                            var newsearch = Console.ReadLine().ToLower();
+                            if (newsearch != "1")
+                            {
+                                { Environment.Exit(0); }
+                            }
+                        }
+
                         break;
 
+                    case "3":
+                        Console.WriteLine("Please enter vehicle make to be added to the database");
+                        var vehcileMakeToBeAdded = Console.ReadLine();
+                        Console.WriteLine("Enter vehicle model to be added to the database");
+                        var vehicleModelToBeAdded = Console.ReadLine();
+                        Console.WriteLine("Enter vehicle year to be added to the database");
+                        var vehicleYearToBeAdded = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter vehicle MPG in the City");
+                        var vehicleMPGCityToBeAdded = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter vehicle MPG Highway to be added to the database");
+                        var vehicleMPGHightwayToBeAdded = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter vehicle MPG Combined to be added to the database");
+                        var vehicleMPGCombinedToBeAdded = int.Parse(Console.ReadLine());
+
+                        VehicleData vehicleDataToAdd = new VehicleData
+                        {
+                            VehicleMake = vehcileMakeToBeAdded,
+                            VehicleModel = vehicleModelToBeAdded,
+                            VehicleYear = vehicleYearToBeAdded,
+                            VehicleFuelEconomyCity = vehicleMPGCityToBeAdded,
+                            VehicleFuelEconomyHW = vehicleMPGHightwayToBeAdded,
+                            VehicleFuelEconomyCombined = vehicleMPGCombinedToBeAdded
+                        };
+                        WriteVehicleData(vehicleDataToAdd);
+
+                        Console.WriteLine("Enter '3'if you would like to enter another vehicle into the database? Or Q to quit");
+                        var enterNewVehicleAgain = Console.ReadLine().ToLower();
+                        if (enterNewVehicleAgain != "3")
+                        {
+                            { Environment.Exit(0); }
+                        }
+
+                        break;
                 }
             }
-
-
         }
 
-        //Read from the file
         public static List<VehicleData> ReadVehicleData(string fileName)
         {
             var vehicleData = new List<VehicleData>();
@@ -80,58 +136,50 @@ namespace FuelEconomy
                 {
                     VehicleData vehicle = new VehicleData();
                     string[] value = line.Split(',');
-
-                    //int parseInt;
-                    //if (int.TryParse(value[4], out parseInt))
-                   // {
-                        //vehicle.VehicleMake = parseInt;
-                    //}
-
                     vehicle.VehicleMake = value[0];
                     vehicle.VehicleModel = value[1];
+
                     int parseInt;
                     if (int.TryParse(value[2], out parseInt))
                     {
-                     vehicle.VehicleYear = parseInt;
+                        vehicle.VehicleYear = parseInt;
                     }
                     int parseInt1;
                     if (int.TryParse(value[3], out parseInt1))
                     {
-                     vehicle.VehicleFuelEconomyCity = parseInt1;
+                        vehicle.VehicleFuelEconomyCity = parseInt1;
                     }
                     int parseInt2;
                     if (int.TryParse(value[4], out parseInt2))
                     {
-                     vehicle.VehicleFuelEconomyHW = parseInt2;
+                        vehicle.VehicleFuelEconomyHW = parseInt2;
                     }
-                    
+
                     vehicleData.Add(vehicle);
                 }
             }
             return vehicleData;
         }
 
-
-        //Write to file (will need to add data values)
-        private static void WriteVehicleData(List<VehicleData> fileContents)
+        private static void WriteVehicleData(VehicleData vehicleDataToAdd)
         {
-            using(var writer = File.AppendText("FuelEconomy.csv"))
+            string currentDirectory = Directory.GetCurrentDirectory();
+            DirectoryInfo directory = new DirectoryInfo(currentDirectory);
+            var fileName = Path.Combine(directory.FullName, "FuelEconomy.csv");
+            using (var writer = File.AppendText(fileName))
             {
-                writer.WriteLine("VehicleMake, VehicleModel,");
-                foreach (var item in fileContents)
-                {
-                    writer.WriteLine(item.VehicleMake + "," + item.VehicleModel);
-                }
+                string vehicleDateToWriteToFile = ($"{vehicleDataToAdd.VehicleMake},{vehicleDataToAdd.VehicleModel}, {vehicleDataToAdd.VehicleYear}, {vehicleDataToAdd.VehicleFuelEconomyCity}, {vehicleDataToAdd.VehicleFuelEconomyHW}, {vehicleDataToAdd.VehicleFuelEconomyCombined}");
+                writer.WriteLine(vehicleDateToWriteToFile);
             }
         }
-       
-        private static void PrintList(List<VehicleData> vehicles)
+
+        private static void PrintVehicleInfo(List<VehicleData> vehicles)
         {
+            Console.WriteLine("\nVehicles matching your search criteria: ");
             foreach (var vehicle in vehicles)
             {
-                Console.WriteLine($"Make: {vehicle.VehicleMake}, Model: {vehicle.VehicleModel}");
+                Console.WriteLine($"Make: {vehicle.VehicleMake}, Model: {vehicle.VehicleModel}, City MPG: {vehicle.VehicleFuelEconomyCity}, Highway MPG: {vehicle.VehicleFuelEconomyHW}");
             }
         }
-
     }
 }
